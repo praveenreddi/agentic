@@ -1,0 +1,151 @@
+location: '#{AZURE_LOCATION}#'
+name: ca-usw3-#{environment}#-agentic-inventory
+resourceGroup: '#{RESOURCE_GROUP_NAME}#'
+type: Microsoft.App/containerApps
+tags:
+  env: '#{environment}#'
+  service: agentic-inventory
+  region: usw3
+  version: '#{GitBuildVersion}#'
+identity:
+  type: SystemAssigned, UserAssigned
+  userAssignedIdentities:
+    '#{APP_MSI_RESOURCE_ID}#': {}
+properties:
+  managedEnvironmentId: /subscriptions/#{SUBSCRIPTION_ID}#/resourceGroups/#{RESOURCE_GROUP_NAME}#/providers/Microsoft.App/managedEnvironments/#{CONTAINER_APP_ENVIRONMENT_NAME}#
+  configuration:
+    activeRevisionsMode: Single
+    ingress:
+      external: true
+      allowInsecure: false
+      targetPort: 8080
+      traffic:
+      - latestRevision: true
+        weight: 100
+      transport: Auto
+    secrets:
+    - name: myregistrypassword
+      value: '#{ACR_PASSWORD_V2}#'
+    - name: ddapikey
+      value: '#{DD_API_KEY}#'
+    # comes from KV
+    # TODO change the typo of the KV names when it's shipped.
+    - name: hgv-subscription-key
+      value: '#{HGV_SUBSCRIPTION_KEY}#'
+    - name: ml-token
+      value: '#{ML_TOKEN}#'
+    - name: ml-gcp-secret
+      value: '#{ML_GCP_CLIENT_SECRET}#'
+    - name: ai-inventory-primary-key
+      keyVaultUrl: https://kv-usw3-#{environment}#-ai-inventory.vault.azure.net/secrets/ai-inventory-primary-key
+      identity: '#{APP_MSI_RESOURCE_ID}#'
+    - name: ai-inv-cosmos-primary-key
+      keyVaultUrl: https://kv-usw3-#{environment}#-ai-inventory.vault.azure.net/secrets/ai-inv-cosmos-primary-key
+      identity: '#{APP_MSI_RESOURCE_ID}#'
+    registries:
+    - server: '#{ACR_NAME_V2}#.azurecr.io'
+      username: '#{ACR_NAME_V2}#'
+      passwordSecretRef: myregistrypassword
+  template:
+    revisionSuffix: '#{GitCommitIdShort}#-#{Build.BuildId}#'
+    containers:
+    - image: '#{ACR_NAME_V2}#.azurecr.io/agentic-inventory:#{GitBuildVersion}#'
+      name: agentic-inventory
+      env:
+      - name: HTTP_PORT
+        value: 80
+      - name: DD_SERVICE
+        value: agentic-inventory
+      - name: DD_ENV
+        value: '#{environment}#'
+      - name: DD_VERSION
+        value: '#{GitBuildVersion}#'
+      - name: DD_API_KEY
+        secretRef: ddapikey
+      - name: DD_SITE
+        value: us3.datadoghq.com
+      - name: DD_LOGS_ENABLED
+        value: "true"
+      - name: DD_AZURE_SUBSCRIPTION_ID
+        value: '#{SUBSCRIPTION_ID}#'
+      - name: DD_AZURE_RESOURCE_GROUP
+        value: '#{RESOURCE_GROUP_NAME}#'
+      - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+        value: '#{APPLICATIONINSIGHTS_CONNECTION_STRING}#'
+        ## custom Application ENV variables
+      - name: APP_MSI_CLIENT_ID
+        value: '#{APP_MSI_CLIENT_ID}#'
+      - name: AZURE_OPENAI_API_KEY
+        secretRef: ai-inventory-primary-key
+      - name: AZURE_OPENAI_ACCOUNT
+        value: '#{AZURE_OPENAI_ACCOUNT}#'
+      - name: AZURE_OPENAI_ENDPOINT
+        value: '#{AZURE_OPENAI_ENDPOINT}#'
+        # for openai manipulations
+      - name: AZURE_OPENAI_DEPLOY
+        value: '#{AZURE_OPENAI_DEPLOY}#'
+      - name: AZURE_OPENAI_ACCOUNT
+        value: '#{AZURE_OPENAI_ACCOUNT}#'
+      - name: AZURE_OPENAI_RESOURCE_GROUP
+        value: '#{AZURE_OPENAI_RESOURCE_GROUP}#'
+      - name: AZURE_OPENAI_SUBSCRIPTION_ID
+        value: '#{AZURE_OPENAI_SUBSCRIPTION_ID}#'
+      - name: AZURE_OPENAI_CAPACITY
+        value: '#{AZURE_OPENAI_CAPACITY}#'
+      # Cosmos stuff
+      - name: COSMOSDB_ACCOUNT_KEY
+        secretRef: ai-inv-cosmos-primary-key
+      - name: COSMOSDB_ENDPOINT
+        value: '#{COSMOSDB_ENDPOINT}#'
+      - name: COSMOSDB_DATABASE_NAME
+        value: '#{COSMOSDB_DATABASE_NAME}#'
+      # For calling other services
+      - name: HGV_BASE_URL
+        value: '#{HGV_BASE_URL}#'
+      - name: HGV_SUBSCRIPTION_KEY
+        secretRef: hgv-subscription-key
+      # For calling ML and GCP
+      - name: ML_GCP_CLIENT_SECRET
+        secretRef: ml-gcp-secret
+      - name: ML_TOKEN
+        secretRef: ml-token
+      - name: ML_URL
+        value: '#{ML_URL}#'
+      # For SSO
+      - name: SSO_CLIENT_ID
+        value: '#{SSO_CLIENT_ID}#'
+      - name: SSO_TENANT_ID
+        value: '#{SSO_TENANT_ID}#'
+      - name: HGV_REDIRECT_URL
+        value: '#{HGV_REDIRECT_URL}#'
+      - name: KEY_VAULT_ENDPOINT
+        value: '#{KEY_VAULT_ENDPOINT}#'
+
+      # only allowed values from https://learn.microsoft.com/en-us/azure/container-apps/containers
+      resources:
+        cpu: 2
+        memory: 4Gi
+      probes:
+      - type: liveness
+        httpGet:
+          path: /api/health
+          port: 8080
+        httpHeaders:
+        - name: x-onesystem-ci
+          value: liveness probe
+        initialDelaySeconds: 10
+        periodSeconds: 10
+      - type: readiness
+        httpGet:
+          path: /api/health
+          port: 8080
+        httpHeaders:
+        - name: x-onesystem-ci
+          value: liveness probe
+        initialDelaySeconds: 3
+        periodSeconds: 5
+        successThreshold: 1
+        failureThreshold: 12
+    scale:
+      minReplicas: 2
+      maxReplicas: 10

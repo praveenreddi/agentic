@@ -1,0 +1,174 @@
+/* Global styles */
+:root {
+  --background-color: #ffffff;
+  --background-color-rgb: 255, 255, 255;
+  --foreground-color: #1a1a1a;
+  --foreground-color-rgb: 26, 26, 26;
+  --primary-color: #0e7490;
+  --primary-color-rgb: 14, 116, 144;
+  --primary-foreground-color: #f8fafc;
+  --primary-foreground-color-rgb: 248, 250, 252;
+  --secondary-color: #e0f2fe;
+  --secondary-color-rgb: 224, 242, 254;
+  --secondary-foreground-color: #0e7490;
+  --secondary-foreground-color-rgb: 14, 116, 144;
+  --muted-color: #f1f5f9;
+  --muted-color-rgb: 241, 245, 249;
+  --muted-foreground-color: #64748b;
+  --muted-foreground-color-rgb: 100, 116, 139;
+  --accent-color: #f1f5f9;
+  --accent-color-rgb: 241, 245, 249;
+  --accent-foreground-color: #1e293b;
+  --accent-foreground-color-rgb: 30, 41, 59;
+  --destructive-color: #ef4444;
+  --destructive-color-rgb: 239, 68, 68;
+  --destructive-foreground-color: #f8fafc;
+  --destructive-foreground-color-rgb: 248, 250, 252;
+  --border-color: #e2e8f0;
+  --border-color-rgb: 226, 232, 240;
+  --input-color: #e2e8f0;
+  --input-color-rgb: 226, 232, 240;
+  --ring-color: #0e7490;
+  --ring-color-rgb: 14, 116, 144;
+  --radius: 0.75rem;
+}
+
+.dark-mode {
+  --background-color: #1e293b;
+  --background-color-rgb: 30, 41, 59;
+  --foreground-color: #f8fafc;
+  --foreground-color-rgb: 248, 250, 252;
+  --primary-color: #0e7490;
+  --primary-color-rgb: 14, 116, 144;
+  --primary-foreground-color: #f8fafc;
+  --primary-foreground-color-rgb: 248, 250, 252;
+  --secondary-color: #334155;
+  --secondary-color-rgb: 51, 65, 85;
+  --secondary-foreground-color: #f8fafc;
+  --secondary-foreground-color-rgb: 248, 250, 252;
+  --muted-color: #334155;
+  --muted-color-rgb: 51, 65, 85;
+  --muted-foreground-color: #94a3b8;
+  --muted-foreground-color-rgb: 148, 163, 184;
+  --accent-color: #334155;
+  --accent-color-rgb: 51, 65, 85;
+  --accent-foreground-color: #f8fafc;
+  --accent-foreground-color-rgb: 248, 250, 252;
+  --destructive-color: #7f1d1d;
+  --destructive-color-rgb: 127, 29, 29;
+  --destructive-foreground-color: #f8fafc;
+  --destructive-foreground-color-rgb: 248, 250, 252;
+  --border-color: #334155;
+  --border-color-rgb: 51, 65, 85;
+  --input-color: #334155;
+  --input-color-rgb: 51, 65, 85;
+  --ring-color: #38bdf8;
+  --ring-color-rgb: 56, 189, 248;
+}
+
+body {
+  margin: 0;
+  //font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    Segoe UI Symbol,
+    "Noto Color Emoji";
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  line-height: 1.5;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: padding-left 0.3s ease;
+}
+
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  padding-top: 72px;
+  padding-bottom: 76px;
+}
+
+.messages-wrapper {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.spinner {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  border: 4px solid var(--primary-color);
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Utility classes */
+.glassmorphism {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.user-message {
+  background-color: var(--primary-color);
+  color: var(--primary-foreground-color);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  margin-left: auto;
+  max-width: 80%;
+  margin-bottom: 1rem;
+}
+
+.bot-message {
+  background-color: var(--secondary-color);
+  color: var(--secondary-foreground-color);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  margin-right: auto;
+  max-width: 80%;
+  margin-bottom: 1rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

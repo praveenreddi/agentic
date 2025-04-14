@@ -1,0 +1,9 @@
+[MASTER]
+
+[TYPECHECK]
+type:reporters=typeguard
+unused-argument=false  # Suppress unused argument warnings.
+useless-suppression=true  # Show suppression messages for useful types.
+
+[REPORTS]
+output-format=text

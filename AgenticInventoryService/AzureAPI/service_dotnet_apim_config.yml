@@ -1,0 +1,16 @@
+version: $(GitBuildVersion)
+apimServiceName: $(ApimResourceName)
+apiVersionSets:
+- name: $(ServiceName)
+  displayName: $(ServiceName)
+  description: $(ServiceName)
+  versioningScheme: header
+  versionHeaderName: version
+apis: []
+products:
+- name: Corporate
+  displayName: Corporate
+  subscriptionRequired: true
+  approvalRequired: true
+  subscriptionsLimit: 1
+  state: Published

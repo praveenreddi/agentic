@@ -1,0 +1,53 @@
+<policies>
+    <inbound>
+        <base />
+        <!-- Enabled CORS policy to allow browser based clients access to this API -->
+        <cors>
+            <allowed-origins>
+                <origin>*</origin>
+            </allowed-origins>
+            <allowed-methods preflight-result-max-age="300">
+                <method>GET</method>
+				<method>POST</method>
+                <method>PUT</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>*</header>
+            </allowed-headers>
+        </cors>
+    </inbound>
+    <backend>
+        <forward-request timeout="180" buffer-request-body="false" />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+        <choose>
+            <when condition="@(context.LastError.Reason == "Timeout")">
+                <return-response>
+                    <set-status code="504" reason="Gateway Timeout" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body template="liquid">
+                    {
+                        "statusCode": 504,
+                        "message": "Gateway Timeout"
+                    }
+                    </set-body>
+                </return-response>
+            </when>
+        </choose>
+        <set-header name="ErrorStatusCode" exists-action="override">
+            <value>@(context.Response.StatusCode.ToString())</value>
+        </set-header>
+        <set-header name="ErrorReason" exists-action="override">
+            <value>@(context.LastError.Reason)</value>
+        </set-header>
+        <set-header name="ErrorMessage" exists-action="override">
+            <value>@(context.LastError.Message)</value>
+        </set-header>
+    </on-error>
+</policies>

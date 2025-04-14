@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "swashbuckle.aspnetcore.cli": {
+      "version": "6.5.0",
+      "commands": [
+        "swagger"
+      ]
+    },
+    "nbgv": {
+      "version": "3.6.133",
+      "commands": [
+        "nbgv"
+      ]
+    },
+    "Apim.DevOps.Toolkit": {
+      "version": "2.0.4",
+      "commands": [
+        "dotnet-apim"
+      ]
+    },
+	"onesystem.dotnet.tools.generator": {
+      "version": "1.0.10",
+      "commands": [
+        "ons"
+      ]
+    },
+	"dotnet-outdated-tool": {
+      "version": "4.6.0",
+      "commands": [
+        "dotnet-outdated"
+      ]
+    }
+  }
+}

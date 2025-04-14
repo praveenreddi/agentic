@@ -1,0 +1,66 @@
+<header class="header-container">
+  <div class="header-content">
+    <div class="left-section">
+      <div class="logo-section">
+        <div class="logo-container">
+          <img
+            src="https://s201.q4cdn.com/229588028/files/design/svg/hgv-logo.svg"
+            alt="HGV Logo"
+            class="logo-image"
+          />
+        </div>
+        <div class="divider"></div>
+        <div class="app-title-container">
+          <div class="app-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              ></path>
+            </svg>
+          </div>
+          <h1 class="app-title">AI Assistant</h1>
+        </div>
+      </div>
+
+      <!-- <button
+        *ngIf="isPanelOpen"
+        class="panel-toggle-button"
+        (click)="onTogglePanelCollapse()"
+        [attr.aria-label]="isPanelCollapsed ? 'Expand panel' : 'Collapse panel'"
+        [title]="isPanelCollapsed ? 'Expand panel' : 'Collapse panel'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" [class.rotate-180]="!isPanelCollapsed">
+          <path d="m9 18 6-6-6-6"></path>
+        </svg>
+      </button>
+
+      <button
+        *ngIf="!isPanelOpen"
+        class="panel-toggle-button"
+        (click)="onToggleHistory()"
+        aria-label="Open history panel"
+        title="Open history panel">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12H3"></path>
+          <path d="M8 5v14"></path>
+        </svg>
+      </button> -->
+    </div>
+
+    <div class="right-section">
+      <!-- <app-theme-toggle></app-theme-toggle> -->
+      <div class="welcome-message" *ngIf="userName">
+        Welcome, <strong>{{ userName }}</strong>
+      </div>
+    </div>
+  </div>
+</header>

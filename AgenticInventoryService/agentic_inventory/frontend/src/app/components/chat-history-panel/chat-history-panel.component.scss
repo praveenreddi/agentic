@@ -1,0 +1,390 @@
+.history-panel {
+  position: fixed;
+  top: 72px; /* Match the header height */
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  background-color: var(--background-color);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.3s ease,
+    width 0.3s ease;
+  z-index: 30;
+
+  &.collapsed {
+    width: 60px;
+
+    /* Add hover effect to expand when collapsed */
+    &:hover {
+      width: 280px;
+
+      .all-chats-title {
+        justify-content: flex-start; /* Align to left when expanded */
+
+        span {
+          display: inline; /* Show the text */
+        }
+      }
+
+      .new-chat-button {
+        justify-content: center; /* Keep new chat centered */
+
+        span {
+          display: inline; /* Show the text */
+        }
+      }
+
+      .settings-button {
+        justify-content: flex-start; /* Align to left when expanded */
+
+        span {
+          display: inline; /* Show the text */
+        }
+      }
+
+      .sessions-list {
+        display: block;
+      }
+
+      .session-content,
+      .session-meta {
+        display: block;
+      }
+    }
+  }
+
+  &.closed {
+    transform: translateX(-100%);
+  }
+}
+
+.panel-header {
+  //padding: 1.5rem 1rem 1rem;
+  padding: 0.75rem;
+  //border-bottom: 1px solid var(--border-color);
+}
+
+.panel-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+
+  .history-panel.collapsed & {
+    display: none;
+  }
+}
+
+.new-chat-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: var(--primary-foreground-color);
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.9);
+  }
+
+  .history-panel.collapsed & {
+    padding: 0.5rem;
+
+    span {
+      display: none;
+    }
+  }
+}
+.all-chats-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: var(--primary-foreground-color);
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.9);
+  }
+
+  .history-panel.collapsed & {
+    padding: 0.5rem;
+
+    span {
+      display: none;
+    }
+  }
+}
+
+.sessions-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 0;
+
+  &.hidden-when-collapsed {
+    display: none;
+  }
+}
+
+.session-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+
+  &:hover {
+    background-color: var(--accent-color);
+  }
+
+  &.active {
+    background-color: var(--secondary-color);
+    color: var(--secondary-foreground-color);
+  }
+
+  .history-panel.collapsed & {
+    padding: 0.75rem;
+    justify-content: center;
+  }
+}
+
+.session-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+  color: var(--primary-color);
+}
+
+.session-content {
+  flex: 1;
+  min-width: 0;
+
+  .history-panel.collapsed & {
+    display: none;
+  }
+}
+
+.session-title {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.session-preview {
+  font-size: 0.875rem;
+  color: var(--muted-foreground-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.session-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+
+  .history-panel.collapsed & {
+    display: none;
+  }
+}
+
+.session-time {
+  font-size: 0.75rem;
+  color: var(--muted-foreground-color);
+}
+
+.delete-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background-color: transparent;
+  color: var(--muted-foreground-color);
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
+
+  &:hover {
+    background-color: var(--accent-color);
+    opacity: 1;
+  }
+}
+
+.no-sessions {
+  padding: 1rem;
+  text-align: center;
+  color: var(--muted-foreground-color);
+
+  .history-panel.collapsed & {
+    display: none;
+  }
+}
+
+.panel-footer {
+  padding: 1rem;
+  margin-top: auto; /* Push to bottom */
+  //border-top: 1px solid var(--border-color);
+}
+
+.settings-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: transparent;
+  color: var(--foreground-color);
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: var(--accent-color);
+  }
+
+  .history-panel.collapsed & {
+    padding: 0.5rem;
+    justify-content: center;
+
+    span {
+      display: none;
+    }
+  }
+}
+
+.delete-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.delete-modal {
+  width: 90%;
+  max-width: 400px;
+  background-color: var(--background-color);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.delete-modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.delete-modal-message {
+  margin-bottom: 1.5rem;
+  color: var(--muted-foreground-color);
+}
+
+.delete-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.cancel-button {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--foreground-color);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: var(--accent-color);
+  }
+}
+
+.confirm-delete-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--destructive-color);
+  color: var(--destructive-foreground-color);
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(var(--destructive-color-rgb), 0.9);
+  }
+}
+
+.chat-history-panel {
+  margin-top: 72px; /* Adjust this value to match the header height */
+  /* Other styles */
+}
+
+.all-chats-header {
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.all-chats-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--muted-foreground-color);
+
+  svg {
+    color: var(--muted-foreground-color);
+  }
+
+  .history-panel.collapsed & {
+    justify-content: center;
+
+    span {
+      display: none;
+    }
+  }
+}
+
+/* Add this to your existing styles */
+.history-panel.collapsed {
+  .sessions-list {
+    display: none;
+  }
+}

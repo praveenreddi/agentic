@@ -1,0 +1,65 @@
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: OneVision/OneSystem
+      ref: refs/tags/pipeline-container-app-7.0
+trigger:
+  branches:
+    include:
+      - main
+      - release/*
+  paths:
+    exclude:
+      - database
+      - data
+
+pool:
+  name: OneVision Build
+
+parameters:
+  - name: DeploymentTarget
+    displayName: Target for Deployment
+    default: Default
+    values:
+      - Default
+      - DEV
+      - QAT
+      - STG
+      - PRD
+  - name: ForceDeployAPIM
+    displayName: Force Re-Deploy of APIM?
+    type: boolean
+    default: false
+  - name: ForceBuild
+    displayName: Force Build (update base image)?
+    type: boolean
+    default: false
+  - name: DefaultEnvironments
+    displayName: Default Deployment Environments
+    type: object
+    default: [ DEV ]
+  - name: CanaryEnvironments
+    displayName: Canary Deployment Environments
+    type: object
+    default:
+      - N/A
+  - name: CanaryPercentage
+    displayName: Canary Traffic %
+    type: number
+    default: 15
+  - name: CanaryWindow
+    displayName: Canary Evaluation Period (Minutes)
+    default: 3
+
+extends:
+  template: Pipelines/Container App/pipeline.yml@templates
+  parameters:
+    DeploymentTarget: ${{ parameters.DeploymentTarget }}
+    DefaultEnvironments: ${{ parameters.DefaultEnvironments }}
+    ForceDeployAPIM: ${{ parameters.ForceDeployAPIM }}
+    ForceBuild: ${{ parameters.ForceBuild }}
+    CanaryEnvironments: ${{ parameters.CanaryEnvironments }}
+    CanaryPercentage: ${{ parameters.CanaryPercentage }}
+    CanaryWindow: ${{ parameters.CanaryWindow }}
+    ServiceName: agentic-inventory

@@ -1,0 +1,38 @@
+<div class="input-bar-container">
+  <div class="input-wrapper">
+    <form (ngSubmit)="handleSubmit()" class="input-form">
+      <input
+        type="text"
+        [(ngModel)]="input"
+        name="messageInput"
+        placeholder="{{ isDisabled ? 'Loading...' : 'Ask me anything' }}"
+        class="message-input"
+        [disabled]="isDisabled"
+      />
+
+      <button
+        type="submit"
+        [disabled]="!input.trim() || isDisabled"
+        class="send-button"
+        aria-label="Send message"
+      >
+        <div *ngIf="isDisabled" class="loading-spinner"></div>
+        <svg
+          *ngIf="!isDisabled"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m22 2-7 20-4-9-9-4Z"></path>
+          <path d="M22 2 11 13"></path>
+        </svg>
+      </button>
+    </form>
+  </div>
+</div>

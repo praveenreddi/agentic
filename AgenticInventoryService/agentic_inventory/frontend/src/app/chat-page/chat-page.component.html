@@ -1,0 +1,70 @@
+<div class="app-container" [ngClass]="{ 'dark-mode': isDarkMode }">
+  <!-- Fixed header at the top -->
+  <app-chat-header
+    class="fixed-header"
+    [isPanelOpen]="isHistoryOpen"
+    [isPanelCollapsed]="isHistoryCollapsed"
+    (toggleHistory)="toggleHistory()"
+    (togglePanelCollapse)="togglePanelCollapse()"
+  ></app-chat-header>
+
+  <!-- Main content area with proper top padding -->
+  <div class="main-content-area">
+    <div class="chat-layout">
+      <app-chat-history-panel
+        [isOpen]="isHistoryOpen"
+        [isCollapsed]="isHistoryCollapsed"
+        [sessions]="sessions"
+        [activeSessionId]="activeSessionId"
+        (selectSession)="handleSelectSession($event)"
+        (createNewChat)="createNewChat()"
+        (deleteSession)="handleDeleteSession($event)"
+        (openSettings)="toggleSettings()"
+      ></app-chat-history-panel>
+
+      <div
+        class="main-content"
+        [style.padding-left]="
+          isHistoryOpen && !isHistoryCollapsed
+            ? '280px'
+            : isHistoryOpen
+              ? '60px'
+              : '0'
+        "
+      >
+        <div class="messages-container">
+          <div class="messages-wrapper">
+            <ng-container *ngIf="isLoading && messages.length === 0">
+              <div class="loading-indicator">
+                <div class="spinner"></div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="!isLoading || messages.length > 0">
+              <app-chat-message
+                *ngFor="let message of messages"
+                [message]="message"
+                (regenerate)="handleRegenerate()"
+                (delete)="handleDeleteMessage($event)"
+              ></app-chat-message>
+
+              <div #messagesEnd></div>
+            </ng-container>
+          </div>
+        </div>
+
+        <app-chat-input-bar
+          [isDisabled]="isLoading || !activeSessionId"
+          (sendMessage)="handleSendMessage($event)"
+        >
+        </app-chat-input-bar>
+      </div>
+    </div>
+  </div>
+
+  <app-settings-panel
+    *ngIf="isSettingsOpen"
+    (close)="toggleSettings()"
+  ></app-settings-panel>
+  <app-settings-button (click)="toggleSettings()"></app-settings-button>
+</div>

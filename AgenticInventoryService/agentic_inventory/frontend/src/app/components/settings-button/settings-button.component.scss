@@ -1,0 +1,29 @@
+.settings-button {
+  // position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  background-color: var(--primary-color);
+  color: var(--primary-foreground-color);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+  z-index: 15;
+
+  &:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.9);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}

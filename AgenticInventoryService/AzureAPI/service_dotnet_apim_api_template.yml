@@ -1,0 +1,14 @@
+name: $(ServiceName)-v1
+displayName:  $(ServiceName)
+serviceUrl: $(BackendUrl)
+openApiSpec: service_swagger_spec_v1.openapi.json
+policy: Policies/APIPolicies.xml
+path: $(ServiceName)
+apiVersion: v1
+apiVersionDescription: My first version
+apiVersionSetId: $(ServiceName)
+apiRevision: $(GitBuildVersion)
+protocols: https
+subscriptionRequired: true
+isCurrent: false
+products: Corporate

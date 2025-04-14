@@ -1,0 +1,214 @@
+scenarios:
+  24h_stress_test:
+    name: "24h_stress_test"
+    description: "24-hour stress test with 10 RPS target"
+    target_rps: 10
+    max_duration: 86400  # 24 hours
+    max_tokens: 100000000  # 100M tokens
+    concurrent_users: 1
+    ramp_up_time: 300  # 5 minutes ramp-up time
+    endpoints:
+      - path: "/api/users/test_user/sessions"
+        method: "POST"
+        payload:
+          title: "Stress Test Session"
+          correlation_id: "stress_test_correlation"
+          user_id: "test_user"
+          metadata:
+            source: "stress_test"
+            test_run: "24h"
+        expected_status: 201
+        response_id_field: "id"
+        depends_on: null
+      - path: "/api/users/test_user/sessions/{session_id}/messages"
+        method: "POST"
+        payload:
+          question: "What is the current inventory status?"
+          metadata:
+            source: "stress_test"
+            test_run: "24h"
+        expected_status: 200
+        token_field: "metadata.tokens_consumed"
+        depends_on: "session_create"
+      - path: "/api/users/test_user/sessions"
+        method: "GET"
+        expected_status: 200
+        token_field: null
+        depends_on: null
+      - path: "/api/users/test_user/sessions/{session_id}/messages"
+        method: "GET"
+        expected_status: 200
+        token_field: null
+        depends_on: "session_create"
+
+  burst_test:
+    name: "burst_test"
+    description: "Short burst test with higher RPS"
+    target_rps: 50
+    max_duration: 1800  # 30 minutes
+    max_tokens: 10000000
+    endpoints:
+      - path: "/api/users/test_user/sessions"
+        method: "POST"
+        payload:
+          title: "Stress Test Session"
+        expected_status: 201
+        response_id_field: "id"
+      - path: "/api/users/test_user/sessions/{session_id}/messages"
+        method: "POST"
+        payload:
+          question: "What is the current inventory status?"
+        expected_status: 200
+        token_field: "metadata.tokens_consumed"
+        depends_on: "create_session"
+      - path: "/api/users/test_user/sessions"
+        method: "GET"
+        expected_status: 200
+        token_field: null
+      - path: "/api/users/test_user/sessions/{session_id}/messages"
+        method: "GET"
+        expected_status: 200
+        token_field: null
+        depends_on: "create_session"
+
+  debug_test:
+    name: "debug_test"
+    description: "Short debug test with minimal endpoints"
+    target_rps: 10
+    max_duration: 60  # 60 seconds
+    max_tokens: 100000
+    concurrent_users: 10
+    ramp_up_time: 10  # 10 second ramp-up time
+    endpoints:
+      - path: "/api/users/test_user/sessions"
+        method: "POST"
+        payload:
+          title: "Debug Test Session"
+          correlation_id: "debug_test_correlation"
+          user_id: "test_user"
+          metadata:
+            source: "debug_test"
+            test_run: "debug"
+        expected_status: 201
+        response_id_field: "id"
+      - path: "/api/users/test_user/sessions/{session_id}/messages"
+        method: "POST"
+        payload:
+          question: "Check inventory for Grand Californian Hotel between 2025-04-01 and 2025-04-07"
+          metadata:
+            source: "debug_test"
+            test_run: "debug"
+        expected_status: 200
+        token_field: "metadata.tokens_consumed"
+        depends_on: "session_create"
+
+  medium_test:
+    name: "medium_test"
+    description: "Medium duration test with moderate load"
+    target_rps: 20
+    max_duration: 300  # 5 minutes
+    max_tokens: 500000
+    concurrent_users: 20
+    ramp_up_time: 30  # 30 second ramp-up time
+    endpoints:
+      - path: "/api/users/test_user/sessions"
+        method: "POST"
+        payload:
+          title: "Medium Test Session"
+          correlation_id: "medium_test_correlation"
+          user_id: "test_user"
+          metadata:
+            source: "medium_test"
+            test_run: "medium"
+        expected_status: 201
+        response_id_field: "id"
+      - path: "/api/users/test_user/sessions/{session_id}/messages"
+        method: "POST"
+        payload:
+          question: "Check inventory for Grand Californian Hotel between 2025-04-01 and 2025-04-07"
+          metadata:
+            source: "medium_test"
+            test_run: "medium"
+        expected_status: 200
+        token_field: "metadata.tokens_consumed"
+        depends_on: "session_create"
+
+  long_test:
+    name: "long_test"
+    description: "Long duration test with high load"
+    target_rps: 30
+    max_duration: 600  # 10 minutes
+    max_tokens: 1000000
+    concurrent_users: 30
+    ramp_up_time: 60  # 60 second ramp-up time
+    endpoints:
+      - path: "/api/users/test_user/sessions"
+        method: "POST"
+        payload:
+          title: "Long Test Session"
+          correlation_id: "long_test_correlation"
+          user_id: "test_user"
+          metadata:
+            source: "long_test"
+            test_run: "long"
+        expected_status: 201
+        response_id_field: "id"
+      - path: "/api/users/test_user/sessions/{session_id}/messages"
+        method: "POST"
+        payload:
+          question: "Check inventory for Grand Californian Hotel between 2025-04-01 and 2025-04-07"
+          metadata:
+            source: "long_test"
+            test_run: "long"
+        expected_status: 200
+        token_field: "metadata.tokens_consumed"
+        depends_on: "session_create"
+
+test_config:
+  base_url: "http://localhost:8080"
+  report_dir: "reports"
+  log_dir: "logs"
+  metrics_interval: 1
+  progress_interval: 1000
+  timeout: 30
+  retry_attempts: 3
+  retry_delay: 1
+  default_scenario: "24h_stress_test"
+
+performance_thresholds:
+  success_rate: 99.0
+  p95_latency: 2.0
+  server_memory_usage: 1024
+  server_cpu_usage: 80.0
+  error_rate: 1.0
+  min_rps: 10.0
+  max_latency: 5.0
+  max_tokens: 100000000
+
+report_config:
+  include_plots: true
+  plot_types:
+    - "latency_distribution"
+    - "memory_usage"
+    - "cpu_usage"
+    - "request_rate"
+    - "error_rate"
+    - "endpoint_distribution"
+    - "token_usage"
+  metrics_to_include:
+    - "total_requests"
+    - "successful_requests"
+    - "failed_requests"
+    - "success_rate"
+    - "average_latency"
+    - "p95_latency"
+    - "max_latency"
+    - "min_latency"
+    - "max_memory_usage"
+    - "average_memory_usage"
+    - "max_cpu_usage"
+    - "average_cpu_usage"
+    - "total_tokens"
+    - "tokens_per_second"
+    - "requests_per_second"
+    - "endpoint_stats"

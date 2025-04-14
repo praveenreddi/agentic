@@ -1,0 +1,149 @@
+# --------------------------------------------------------------------------------
+# Agentic Inventory AI Evaluation Framework - Test Cases
+# --------------------------------------------------------------------------------
+# This file contains structured LLM test cases for the Agentic Inventory AI system.
+# Each entry defines a question, expected response, and evaluation criteria.
+#
+# Running the Evaluation:
+#   1. Navigate to the root project directory.
+#   2. Run the following command:
+#      pytest tests/test_eval_framework.py
+#
+# Adding New Test Cases:
+#   1. Open this file: config/agentic_inventory_eval.yml
+#   2. Add a new test entry following the structured format.
+#   3. Ensure the 'id' is unique.
+#   4. Run pytest to validate AI responses.
+#
+# Current Status:
+#   - Test Cases: Continuously expanding inventory and demand-related queries
+#   - Expected Answers: Some responses are placeholders and subject to refinement
+#   - Evaluation Logic: Iteratively improving AI validation methodology
+#
+# Future Enhancements:
+#   - Refine AI evaluation metrics to handle complex inventory logic
+#   - Integrate test results into dashboards for tracking AI accuracy over time
+#   - Develop scoring metrics or weighted scoring for AI responses
+# --------------------------------------------------------------------------------
+
+questions:
+  - id: "verify_resort_typo"
+    description: "Check if a resort exists with a possible typo."
+    category: "inventory_text"
+    user_request: "Is Tusckanny Villoge a resort name?"
+    expected_answer: "Did you mean Tuscany Village, a Hilton Grand Vacations Club?"
+    difficulty: "easy"
+    exact_response: false
+    is_edge_case: true
+    is_test_case: true
+    is_graphical: false
+
+  - id: "verify_false_resort"
+    description: "Check if a resort exists with a possible typo."
+    category: "inventory_text"
+    user_request: "Is El brillante Mañana Resort de Женя a resort name?"
+    expected_answer: "No"
+    difficulty: "medium"
+    exact_response: false
+    is_edge_case: true
+    is_test_case: true
+    is_graphical: false
+
+  - id: "dev_availability_specific_resort"
+    description: "Check developer availability for a specific resort and date."
+    category: "inventory_table"
+    user_request: "Give me the dev availability for November 2024 for VDG."
+    expected_answer: "Table showing developer segment availability for Vilar Do Golf in November 2024."
+    difficulty: "hard"
+    exact_response: false
+    is_edge_case: false
+    is_test_case: true
+    is_graphical: false
+
+  - id: "verify_resort_tuscany"
+    description: "Check if a resort exists."
+    category: "inventory_text"
+    user_request: "Is there a resort called Tusciny Vilage?"
+    expected_answer: "Yes, Tuscany Village, a Hilton Grand Vacations Club is a valid resort."
+    difficulty: "easy"
+    exact_response: true
+    is_edge_case: false
+    is_test_case: true
+    is_graphical: false
+
+  - id: "availability_check_flamingo"
+    description: "Check availability for a specific segment and resort."
+    category: "inventory_table"
+    user_request: "What is the availability for developer units at Flamingo in September 2024?"
+    expected_answer: "Table showing developer segment availability for Flamingo, a Hilton Grand Vacations Club in September 2024."
+    difficulty: "medium"
+    exact_response: false
+    is_edge_case: false
+    is_test_case: true
+    is_graphical: false
+
+  - id: "visualization_pie_availability"
+    description: "Generate a pie chart showing availability by segment for a specific month."
+    category: "inventory_graph"
+    user_request: "Create a pie chart showing availability of different segments for all properties for November 2024."
+    expected_answer: "Pie chart displaying segment availability across all properties for November 2024."
+    difficulty: "hard"
+    exact_response: false
+    is_edge_case: false
+    is_test_case: true
+    is_graphical: true
+
+  - id: "verify_resort_boulevard"
+    description: "Check if a resort exists."
+    category: "inventory_text"
+    user_request: "Is there a resort called The Boulevard?"
+    expected_answer: "Yes, The Boulevard, a Hilton Grand Vacations Club is a valid resort."
+    difficulty: "easy"
+    exact_response: true
+    is_edge_case: false
+    is_test_case: true
+    is_graphical: false
+
+  - id: "availability_check_parc_soleil"
+    description: "Check availability for a specific segment and resort."
+    category: "inventory_value"
+    user_request: "What is the availability for club units at Parc Soleil on December 8, 2024?"
+    expected_answer: "Table showing club segment availability for Parc Soleil, a Hilton Grand Vacations Club in December 2024."
+    difficulty: "medium"
+    exact_response: true
+    is_edge_case: false
+    is_test_case: true
+    is_graphical: false
+
+  - id: "verify_resort_grand_waikikian"
+    description: "Check if a resort exists."
+    category: "inventory_text"
+    user_request: "Is there a resort called Grand Waikikian?"
+    expected_answer: "Yes, Grand Waikikian, a Hilton Grand Vacations Club is a valid resort."
+    difficulty: "easy"
+    exact_response: false
+    is_edge_case: false
+    is_test_case: true
+    is_graphical: false
+
+  - id: "availability_check_maui_bay_villas"
+    description: "Check availability for a specific segment and resort."
+    category: "inventory_table"
+    user_request: "What is the availability for club units at Maui Bay Villas in October 2024?"
+    expected_answer: "Table showing club segment availability for Maui Bay Villas, a Hilton Grand Vacations Club in October 2024."
+    difficulty: "medium"
+    exact_response: false
+    is_edge_case: false
+    is_test_case: true
+    is_graphical: false
+
+  - id: "visualization_availability_maui_bay_villas"
+    description: "Generate a chart of the availability for club units at Maui Bay Villas in October 2024."
+    category: "inventory_graph"
+    user_request: "Make a chart of the availability for club units at Maui Bay Villas in October 2024."
+    expected_answer: "Graph showing club segment availability for Maui Bay Villas, a Hilton Grand Vacations Club in October 2024."
+    difficulty: "hard"
+    exact_response: false
+    is_edge_case: false
+    is_test_case: true
+    is_graphical: true

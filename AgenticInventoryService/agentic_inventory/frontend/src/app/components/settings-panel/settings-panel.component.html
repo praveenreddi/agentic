@@ -1,0 +1,149 @@
+<div class="settings-modal-backdrop" (click)="onClose()">
+  <div class="settings-modal" (click)="$event.stopPropagation()">
+    <div class="settings-header">
+      <h2 class="settings-title">Settings</h2>
+
+      <button
+        class="close-button"
+        (click)="onClose()"
+        aria-label="Close settings"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="settings-content">
+      <div class="settings-section">
+        <!-- <h3 class="section-title">Appearance</h3> -->
+
+        <div class="setting-item">
+          <div class="setting-label">
+            <span>Verbose</span>
+          </div>
+          <div class="setting-control">
+            <label class="toggle-switch">
+              <input
+                type="checkbox"
+                id="darkModeToggle"
+                [checked]="isDarkMode"
+                (change)="toggleDarkMode()"
+              />
+              <span class="toggle-slider"></span>
+            </label>
+            <label for="darkModeToggle" class="sr-only">Dark Mode</label>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-label">
+            <span>Dark Mode</span>
+          </div>
+          <div class="setting-control">
+            <label class="toggle-switch">
+              <input
+                type="checkbox"
+                id="darkModeToggle"
+                [checked]="isDarkMode"
+                (change)="toggleDarkMode()"
+              />
+              <span class="toggle-slider"></span>
+            </label>
+            <label for="darkModeToggle" class="sr-only">Dark Mode</label>
+          </div>
+        </div>
+
+        <!-- <div class="setting-item">
+          <div class="setting-label">
+            <span>Font Size</span>
+          </div>
+          <div class="setting-control font-size-options">
+            <button
+              class="font-size-button"
+              [class.active]="settings.fontSize === 'small'"
+              (click)="updateFontSize('small')"
+            >
+              Small
+            </button>
+            <button
+              class="font-size-button"
+              [class.active]="settings.fontSize === 'medium'"
+              (click)="updateFontSize('medium')"
+            >
+              Medium
+            </button>
+            <button
+              class="font-size-button"
+              [class.active]="settings.fontSize === 'large'"
+              (click)="updateFontSize('large')"
+            >
+              Large
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3 class="section-title">Preferences</h3>
+
+        <div class="setting-item">
+          <div class="setting-label">
+            <span>Language</span>
+          </div>
+          <div class="setting-control">
+            <label for="languageSelect" class="sr-only">Select Language</label>
+            <select
+              id="languageSelect"
+              class="language-select"
+              [value]="settings.language"
+              (change)="updateLanguage($event)"
+              aria-label="Select language"
+            >
+              <option *ngFor="let lang of languages" [value]="lang.code">
+                {{ lang.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-label">
+            <span>Notifications</span>
+          </div>
+          <div class="setting-control">
+            <label class="toggle-switch">
+              <input
+                type="checkbox"
+                id="notificationsToggle"
+                [checked]="settings.notifications"
+                (change)="toggleNotifications()"
+              >
+              <span class="toggle-slider"></span>
+            </label>
+            <label for="notificationsToggle" class="sr-only">Enable Notifications</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-footer">
+      <button class="reset-button" (click)="resetSettings()">
+        Reset to Defaults
+      </button>
+    </div> -->
+      </div>
+    </div>
+  </div>
+</div>

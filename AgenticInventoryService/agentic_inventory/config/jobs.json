@@ -1,0 +1,53 @@
+{
+  "daily_report": {
+    "id": "job_001",
+    "job_name": "daily_report",
+    "config": {
+      "schedule": "*/1 * * * *",
+      "description": "Generate daily analytics report",
+      "notify": {
+        "enabled": true,
+        "method": "email"
+      },
+      "preserve_state": false,
+      "save_chain_of_thought": false,
+      "resort_list": [
+        "resort1"
+      ],
+      "segment_list": [
+        "segmentA"
+      ]
+    }
+  },
+  "data_sync": {
+    "config": {
+      "schedule": "*/3 * * * *",
+      "description": "Sync data from external sources",
+      "notify": {
+        "enabled": false
+      }
+    }
+  },
+  "weekly_summary": {
+    "id": "job_002",
+    "job_name": "weekly_summary",
+    "config": {
+      "schedule": "*/2 * * * *",
+      "description": "Generate weekly summary report",
+      "notify": {
+        "enabled": true,
+        "method": "email"
+      },
+      "preserve_state": false,
+      "save_chain_of_thought": false,
+      "resort_list": [
+        "resort1",
+        "resort2"
+      ],
+      "segment_list": [
+        "segmentA",
+        "segmentB"
+      ]
+    }
+  }
+}

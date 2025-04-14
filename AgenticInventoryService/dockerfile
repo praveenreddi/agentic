@@ -1,0 +1,43 @@
+# syntax=docker/dockerfile:1
+
+# Stage 1: Build frontend
+FROM node:20-alpine AS frontend
+WORKDIR /usr/app
+
+# Copy only frontend code
+COPY agentic_inventory/ ./agentic_inventory
+WORKDIR /usr/app/agentic_inventory/frontend
+
+# Set permissions and build
+RUN chown -R node:node /usr/app
+USER node
+RUN npm install
+RUN npm run build
+
+# Stage 2: Main app using Python SDK base
+FROM acrusw3shdnonprodv2.azurecr.io/python/sdk:3.12
+WORKDIR /usr/app
+
+# Copy application code
+COPY agentic_inventory/ ./agentic_inventory
+COPY README.md .
+COPY agentic_inventory.conf.py .
+COPY poetry.lock .
+COPY pyproject.toml .
+
+# Copy built frontend from previous stage
+COPY --from=frontend /usr/app/agentic_inventory/frontend/dist /usr/app/agentic_inventory/frontend/dist
+
+# Install Python dependencies using Poetry
+RUN poetry config virtualenvs.create false \
+ && poetry config certificates.PyPI.cert false \
+ && poetry config certificates.fpho.cert false \
+ && poetry config certificates.github.cert false \
+ && poetry install --no-interaction --no-ansi --only main \
+ && rm -rf $POETRY_CACHE_DIR \
+ && poetry show
+
+EXPOSE 8080
+
+# Final command
+CMD ["ddtrace-run", "poetry", "run", "gunicorn", "agentic_inventory.main:app", "-c", "agentic_inventory.conf.py"]

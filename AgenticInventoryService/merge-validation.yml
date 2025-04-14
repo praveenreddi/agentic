@@ -1,0 +1,29 @@
+pool:
+  vmImage: ubuntu-latest
+
+#trigger: none
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - README.md
+
+trigger: none
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: OneVision/OneSystem
+      ref: refs/tags/pipeline-container-app-7.0
+
+variables:
+  - name: SERVICE_NAME # Used for docker image, container app name, apim, etc.
+    value: agentic-inventory
+
+extends:
+  template: Pipelines/Container App/python-merge-validation.yml@templates
+  parameters:
+    SERVICE_NAME: $(SERVICE_NAME)

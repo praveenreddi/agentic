@@ -1,0 +1,37 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "NameofNamedValue": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the API NamedValue"
+            }
+        },
+        "ValueofNamedValue": {
+            "type": "string",
+            "metadata": {
+                "description": "Value of the API NamedValue"
+            }
+        },
+        "ApimServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the API Management"
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/namedValues",
+            "apiVersion": "2019-12-01",
+            "name": "[concat(parameters('ApimServiceName'), '/', parameters('NameofNamedValue'))]",
+            "properties": {
+                "secret": false,
+                "displayName": "[parameters('NameofNamedValue')]",
+                "value": "[parameters('ValueofNamedValue')]"
+            },
+            "dependsOn": []
+        }
+    ]
+}
